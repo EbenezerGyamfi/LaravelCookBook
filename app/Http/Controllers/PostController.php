@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
+use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
@@ -25,9 +26,9 @@ class PostController extends Controller
     public function create(Post $post)
     {
 
-       return view('post-add',[
-        'post' => $post
-       ]);
+        return view('post-add', [
+            'post' => $post
+        ]);
     }
 
     /**
@@ -36,7 +37,7 @@ class PostController extends Controller
     public function store(StorePostRequest $request)
     {
 
-        Post::create(array_merge(['user_id' => auth()->id()], $request->all()));
+        Post::create($this->fields($request));
         return back()->with('status', 'Post created');
     }
 
@@ -62,7 +63,9 @@ class PostController extends Controller
      */
     public function update(UpdatePostRequest $request, Post $post)
     {
-        //
+        $post->update($this->fields($request));
+
+        return back()->with('status', 'post updated');
     }
 
     /**
@@ -71,5 +74,10 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         //
+    }
+
+    private function fields($request)
+    {
+        return array_merge(['user_id' => auth()->id()], $request->all());
     }
 }
