@@ -13,15 +13,21 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+
+        return view('all-posts', [
+            'posts' => Post::where('user_id', auth()->id())->latest()->get()
+        ]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Post $post)
     {
-        //
+
+       return view('post-add',[
+        'post' => $post
+       ]);
     }
 
     /**
@@ -29,7 +35,9 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
-        //
+
+        Post::create(array_merge(['user_id' => auth()->id()], $request->all()));
+        return back()->with('status', 'Post created');
     }
 
     /**
@@ -45,7 +53,8 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        //
+
+        return view('post', compact('post'));
     }
 
     /**

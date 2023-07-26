@@ -14,19 +14,26 @@
                             </div>
                         @endif
 
-                        <form>
+                        @if (session('success'))
+                            <div class="alert alert-success" role="alert">
+                                {{ session('status') }}
+                            </div>
+                        @endif
+
+                        <form method="POST" action="/post">
+                            @csrf
                             <div class="form-group">
-                                <label for="exampleInputEmail1">Email address</label>
-                                <input type="email" class="form-control mb-3" id="exampleInputEmail1"
-                                    aria-describedby="emailHelp" placeholder="Enter email">
+                                <label for="title">Title</label>
+                                <input type="text" value="{{ old('title') }}" class="form-control mb-3" id="title"
+                                    aria-describedby="title" name="title" placeholder="Enter Title">
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputPassword1">Password</label>
-                                <input type="password" class="form-control mb-3" id="exampleInputPassword1"
-                                    placeholder="Password">
+                                <label for="content">Content</label>
+                                <textarea class="form-control mb-3" id="content" name="content" rows="3">{{ old('content') }}</textarea>
                             </div>
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </form>
+                        <hr>
                     </div>
                 </div>
             </div>
